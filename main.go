@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gopkg.in/yaml.v2"
+	"io"
 	"os"
 )
 
@@ -25,19 +26,28 @@ type xGoogleBackend struct {
 }
 
 func main() {
-	for _, f := range os.Args[1:] {
-		var spec swaggerSpec
-		file, err := os.Open(f)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		}
-		err = yaml.NewDecoder(file).Decode(&spec)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		}
+	var spec swaggerSpec
+	var files []io.Reader
 
+	if len(os.Args) > 1 {
+		for _, f := range os.Args[1:] {
+			file, err := os.Open(f)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
+			files = append(files, file)
+		}
+	} else {
+		files = []io.Reader{os.Stdin}
+	}
+
+	for _, f := range files {
+		err := yaml.NewDecoder(f).Decode(&spec)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
 		injectXGoogleBackend(&spec)
 
 		err = yaml.NewEncoder(os.Stdout).Encode(spec)
