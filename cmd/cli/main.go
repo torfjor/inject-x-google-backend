@@ -37,7 +37,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
-		
+
 		injectXGoogleBackend(&spec)
 
 		err = yaml.NewEncoder(os.Stdout).Encode(spec)
