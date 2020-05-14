@@ -16,7 +16,7 @@ type swaggerSpec struct {
 	Schemes        []string
 	Produces       []string
 	Paths          map[string]map[string]map[string]interface{}
-	XGoogleBackend xGoogleBackend `yaml:"x-google-backend"`
+	XGoogleBackend xGoogleBackend `yaml:"x-google-backend,omitempty"`
 }
 
 type xGoogleBackend struct {
@@ -51,9 +51,11 @@ func main() {
 func injectXGoogleBackend(s *swaggerSpec) {
 	for path, ops := range s.Paths {
 		for op, _ := range ops {
-			s.Paths[path][op]["x-google-backend"] = xGoogleBackend{
-				Address:  s.XGoogleBackend.Address,
-				Protocol: s.XGoogleBackend.Protocol,
+			if len(s.Paths[path][op]) > 0 {
+				s.Paths[path][op]["x-google-backend"] = xGoogleBackend{
+					Address:  s.XGoogleBackend.Address,
+					Protocol: s.XGoogleBackend.Protocol,
+				}
 			}
 		}
 	}
