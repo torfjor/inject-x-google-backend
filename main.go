@@ -21,8 +21,9 @@ type swaggerSpec struct {
 }
 
 type xGoogleBackend struct {
-	Address  string
-	Protocol string
+	Address         string
+	Protocol        string
+	PathTranslation string `yaml:"path_translation"`
 }
 
 func main() {
@@ -65,8 +66,9 @@ func injectXGoogleBackend(s *swaggerSpec) {
 		for op, _ := range ops {
 			if len(s.Paths[path][op]) > 0 {
 				s.Paths[path][op]["x-google-backend"] = &xGoogleBackend{
-					Address:  s.XGoogleBackend.Address,
-					Protocol: s.XGoogleBackend.Protocol,
+					Address:         s.XGoogleBackend.Address,
+					Protocol:        s.XGoogleBackend.Protocol,
+					PathTranslation: s.XGoogleBackend.PathTranslation,
 				}
 			}
 		}
