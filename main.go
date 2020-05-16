@@ -23,7 +23,7 @@ type swaggerSpec struct {
 type xGoogleBackend struct {
 	Address         string
 	Protocol        string `yaml:"protocol,omitempty"`
-	PathTranslation string `yaml:"path_translation"`
+	PathTranslation string `yaml:"path_translation,omitempty"`
 }
 
 func main() {
