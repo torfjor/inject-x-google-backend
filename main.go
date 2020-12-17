@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
 type swaggerSpec struct {
@@ -13,12 +14,13 @@ type swaggerSpec struct {
 		Title   string
 		Version string
 	}
-	Host           string
-	Schemes        []string
-	Produces       []string
-	Paths          map[string]map[string]map[string]interface{}
-	Definitions    map[string]interface{}
-	XGoogleBackend *xGoogleBackend `yaml:"x-google-backend,omitempty"`
+	Host            string
+	Schemes         []string
+	Produces        []string
+	Paths           map[string]map[string]map[string]interface{}
+	Definitions     map[string]interface{}
+	XAltDefinitions map[string]interface{} `yaml:"x-alt-definitions"`
+	XGoogleBackend  *xGoogleBackend        `yaml:"x-google-backend,omitempty"`
 }
 
 type xGoogleBackend struct {
